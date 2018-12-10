@@ -7,12 +7,6 @@ import numpy as np
 import constants as const
 
 
-# event_filter notebook
-def by_season(pbp, season):
-    "Returns pbp from a given season. Season codes take the form '20142015'."
-    return pbp[pbp['season'] == season]
-
-
 ############### By team ######################################
 
 def by_home_team(pbp, team):
@@ -167,67 +161,6 @@ def shots(pbp):
 def shot_attempts(pbp):
     return pbp[(pbp['Event'] == 'SHOT') | (pbp['Event'] == 'GOAL')
                   | (pbp['Event'] == 'MISS') | (pbp['Event'] == 'BLOCK')]
-
-def shooting_percentage(pbp):#TODO
-    goal = goals(pbp)
-    shot = shots(pbp)
-    shot_percentage = goal/shot
-    return shot_percentage
-
-def record(pbp):
-    Win = []
-    Loss = []
-    Tie = []
-    if pbp['Home_Score'] > pbp['Away_Score']:
-        Win.append(pbp['Home_Team'])
-        Loss.append(pbp['Away_Team'])
-    elif pbp['Home_Score'] < pbp['Away_Score']:
-        Win.append(pbp['Away_Team'])
-        Loss.append(pbp['Home_Team'])
-    else:
-        Tie.append(pbp['Home_Team'])
-        Tie.append(pbp['Away_Team'])
-
-    return Win, Loss, Tie
-
-def losses(pbp):
-    Losses = []
-    if pbp['Home_Score'] > pbp['Away_Score']:
-        Losses.append(pbp['Away_Team'])
-    else:
-        Losses.append((pbp['Home_Team']))
-    return Losses
-
-def tie(pbp):
-    Ties = []
-    if pbp['Home_Score'] == pbp['Away_Score']:
-        Ties.append(pbp['Home_Team'])
-        Ties.append(pbp['Away_Team'])
-    return Ties
-
-
-
-def game_winning_goals(pbp):  #TODO
-    "Returns subset of the input pbp which represent game winning goals. Note that the input must include all non-shootout goals in a game for the output to be reliable."
-    goal = remove_shootouts(pbp[pbp['Event'] == 'GOAL'])
-    games = goal.groupby('Game_Id')
-
-    def _find_gwg(game_goals):  # Returns empty df if a tie
-        def _max_score(team):  # team = 'home' or 'away'
-            score = game_goals[team + '_score'].max()
-            if (game_goals.tail(1)['Ev_Team'].values[0] == game_goals[team + 'team'].values[0]):
-                score += 1  # score entries don't include the goal just scored
-            return score
-
-        winner, loser = 'home', 'away'
-        if _max_score('away') > _max_score('home'):
-            winner, loser = 'away', 'home'
-        winner_goals = game_goals[game_goals['Ev_Team'] == game_goals[winner + 'team']]
-        return winner_goals[winner_goals[winner + '.score'] + 1 > _max_score(loser)].head(1)
-
-    gwg = games.apply(_find_gwg)
-    gwg.index = gwg.index.levels[1]  # removes the redundant gcode indexing layer
-    return gwg
 
 
 
