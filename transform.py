@@ -45,7 +45,7 @@ def transform(pbp):
     pbpMiss = (pbpMiss.groupby(['Game_Id', 'Ev_Team'])['Event'].size().reset_index())
     pbpMiss.rename(columns={'Event': 'Misses'}, inplace=True)
     pbpO = pd.concat(
-        [regDfShotAtt, regDfMiss['Misses'], regDfSOG['SOG_for'], regDfHit['Hits_for'], regDfblocks['Blocks_A']], axis=1)
+        [pbpShotAtt, pbpMiss['Misses'], pbpSOG['SOG_for'], pbpHit['Hits_for'], pbpblocks['Blocks_A']], axis=1)
     # at this point we need the 'Against' metrics which are really the opposite of the calculations we have already made, so we make a loop to do that.
     # this is very repetiative and there may be a better way about it, but this is what I came up with
     games_list = list(pbpO.Game_Id.unique())
@@ -116,7 +116,7 @@ def transform(pbp):
     pbpcomplete['wshF%'] = round((pbpcomplete['wshF'] / (pbpcomplete['wshF'] + pbpcomplete['wshA'])) * 100, 2)
     pbpcomplete['Sv%'] = round((pbpcomplete['Saves'] / pbpcomplete['SOG_A']) * 100, 2)
 
-    # and finally to calculate wins. I am going to count ties as a win for now since both teams get a standings point. if it negativly affects the model I'll adjust
+    # and finally to calculate wins. I am going to count ties as a win for now since both teams get a standings point. you can have better control on this if you include shootouts.
     pbpcomplete['Win'] = np.where(np.logical_or(pbpcomplete['Goals_for'] > pbpcomplete['Goals_A'],
                                                   pbpcomplete['Goals_for'] == pbpcomplete['Goals_A']), 1, 0)
     return pbpcomplete
