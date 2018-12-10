@@ -1,5 +1,5 @@
 """
-Functions for subsetting/filtering the cleaned NHL Play by Play data. I leverged hockey_scraper to get data from the NHL API.
+Functions for subsetting/filtering the cleaned NHL Play by Play data. I leveraged hockey_scraper to get data from the NHL API.
 """
 
 import pandas as pd
