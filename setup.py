@@ -10,7 +10,8 @@ setup(
 		author = ‘Patrick Jordan’,
 		description=‘package to conduct anlysis on NHL play by play data’,
 		license=‘MIT’
-		packages=find_packages(),
+		packages=find_packages('src'),
+		package_dir={'':'src'},
 		install_requires=required,
 		version=‘0.0’
 		url=‘https://github.com/pjordan34/nhl_analysis.git’
