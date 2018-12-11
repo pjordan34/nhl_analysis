@@ -4,7 +4,7 @@ Functions for subsetting/filtering the cleaned NHL Play by Play data. I leverage
 
 import pandas as pd
 import numpy as np
-import hockey_analysis.constants as const
+import constants as const
 
 
 ############### By team ######################################
