@@ -1,7 +1,7 @@
 """
 Functions to perform aggregation on the cleaned WAR-On-Ice data. 
 """
-import event_filter as evfilter
+import hockey_analysis.event_filter as evfilter
 import pandas as pd
 
 
